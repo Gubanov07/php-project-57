@@ -33,9 +33,6 @@ test:
 test-coverage:
 	XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
 
-deploy:
-	git push heroku
-
 lint:
 	composer exec phpcs -- --standard=PSR12 app routes tests
 
