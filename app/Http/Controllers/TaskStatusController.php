@@ -84,7 +84,7 @@ class TaskStatusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TaskStatus $taskStatus)
     {
         if ($taskStatus->tasks()->exists()) {
             flash(__('task_status.cannot_delete'))->error();
