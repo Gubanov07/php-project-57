@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\LabelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('tasks', TaskController::class);
-
 require __DIR__.'/auth.php';
+
+Route::resources([
+    '/task_statuses' => TaskStatusController::class,
+    '/tasks' => TaskController::class,
+    '/labels' => LabelController::class,
+]);

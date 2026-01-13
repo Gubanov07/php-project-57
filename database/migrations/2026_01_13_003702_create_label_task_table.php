@@ -12,11 +12,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('task_statuses', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::create('label_task', function (Blueprint $table) {
+            $table->foreignId('task_id')->constrained('tasks');
+            $table->foreignId('label_id')->constrained('labels');
             $table->timestamps();
-        });
+            }
+        );
     }
 
     /**
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_statuses');
+        Schema::dropIfExists('label_task');
     }
 };

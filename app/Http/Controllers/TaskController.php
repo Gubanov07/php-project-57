@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -20,8 +21,9 @@ class TaskController extends Controller
     {
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
         
-        return view('tasks.create', compact('statuses', 'users'));
+        return view('tasks.create', compact('statuses', 'users', 'labels'));
     }
     
     public function store(Request $request)
@@ -31,6 +33,8 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'nullable|exists:users,id',
+            'labels' => 'nullable|array',
+            'labels.*' => 'exists:labels,id',
         ]);
         
         $task = Task::create([
@@ -41,13 +45,17 @@ class TaskController extends Controller
             'assigned_to_id' => $validated['assigned_to_id'] ?? null,
         ]);
         
+        if (isset($validated['labels'])) {
+            $task->labels()->attach($validated['labels']);
+        }
+        
         flash(__('task.created'))->success();
         return redirect()->route('tasks.index');
     }
     
     public function show(Task $task)
     {
-        $task->load(['status', 'creator', 'assignee']);
+        $task->load(['status', 'creator', 'assignee', 'labels']);
         return view('tasks.show', compact('task'));
     }
     
@@ -55,8 +63,9 @@ class TaskController extends Controller
     {
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
         
-        return view('tasks.edit', compact('task', 'statuses', 'users'));
+        return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
     }
     
     public function update(Request $request, Task $task)
@@ -66,9 +75,18 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'nullable|exists:users,id',
+            'labels' => 'nullable|array',
+            'labels.*' => 'exists:labels,id',
         ]);
         
-        $task->update($validated);
+        $task->update([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'status_id' => $validated['status_id'],
+            'assigned_to_id' => $validated['assigned_to_id'] ?? null,
+        ]);
+        
+        $task->labels()->sync($validated['labels'] ?? []);
         
         flash(__('task.updated'))->success();
         return redirect()->route('tasks.index');
