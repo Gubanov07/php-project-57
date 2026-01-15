@@ -6,16 +6,15 @@
 @section('content')
 
     <div class="grid col-span-full">
-        <h1 class="max-w-2xl mb-4 text-4xl leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">
-            {{ __('layout.task_header') }} </h1>
+        <h1 class="max-w-2xl mb-4 text-4xl leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">{{ __('layout.task_header') }}</h1>
         <div class="w-full flex items-center">
             <div>
                 {{Form::open(['route' => 'tasks.index', 'method' => 'GET'])}}
                     <div class="flex">
                         <div>
-                            {{Form::select('filter[status_id]', $taskStatuses, $filter['status_id'] ?? null, ['placeholder' => __('layout.table_task_status'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}                        </div>
+                            {{Form::select('filter[status_id]', $taskStatuses, $filter['status_id'] ?? null, ['placeholder' => __('layout.table_task_status'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}
                         <div >
-                            {{Form::select('filter[created_by_id]', $users, $filter['created_by_id'] ?? null, ['placeholder' => __('layout.table_creater'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}                        </div>
+                            {{Form::select('filter[created_by_id]', $users, $filter['created_by_id'] ?? null, ['placeholder' => __('layout.table_creater'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}
                         <div>
                             {{Form::select('filter[assigned_to_id]', $users, $filter['assigned_to_id'] ?? null, ['placeholder' => __('layout.table_assigned'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}
                         </div>
@@ -33,7 +32,8 @@
                     @csrf
                     <a href="{{ route('tasks.create') }}"
                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        {{ __('layout.create_button_task') }}           </a>
+                        {{ __('layout.create_button_task') }}
+                    </a>
                     @endauth
                 </div>
         </div>
