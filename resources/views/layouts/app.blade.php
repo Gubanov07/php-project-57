@@ -65,6 +65,6 @@
         @yield('content')
     </div>
 </section>
-@extends('layouts.flash-scripts')
+@extends('layouts.flash')
 </body>
 </html>

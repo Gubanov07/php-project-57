@@ -38,9 +38,9 @@ class TaskStatusController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:task_statuses|max:255|min:1',
         ]);
-        
+
         $taskStatus = TaskStatus::create($validated);
-        
+
         flash(__('task_status.created'))->success();
         return redirect()->route('task_statuses.index');
     }
@@ -74,9 +74,9 @@ class TaskStatusController extends Controller
                 Rule::unique('task_statuses')->ignore($taskStatus->id),
             ],
         ]);
-        
+
         $taskStatus->update($validated);
-        
+
         flash(__('task_status.updated'))->success();
         return redirect()->route('task_statuses.index');
     }
@@ -90,9 +90,9 @@ class TaskStatusController extends Controller
             flash(__('task_status.cannot_delete'))->error();
             return redirect()->route('task_statuses.index');
         }
-        
+
         $taskStatus->delete();
-        
+
         flash(__('task_status.deleted'))->success();
         return redirect()->route('task_statuses.index');
     }

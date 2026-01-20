@@ -41,5 +41,8 @@
             "name": "Alexandr",
             "email": "sgubanov325@gmail.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^4.0"
+    }
 }

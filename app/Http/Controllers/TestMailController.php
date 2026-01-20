@@ -10,7 +10,7 @@ class TestMailController extends Controller
     public function sendTestEmail()
     {
         Mail::to('test@example.com')->send(new \App\Mail\TestMail());
-        
+
         return 'Письмо отправлено в логи';
     }
 }

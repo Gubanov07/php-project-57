@@ -26,10 +26,10 @@ class TaskTest extends TestCase
     public function testCreateForUser(): void
     {
         $user = User::factory()->create();
-        
+
         $response = $this->actingAs($user)
             ->get(route('tasks.create'));
-        
+
         $response->assertOk();
         $response->assertSee(__('task.create_task'));
     }
@@ -37,12 +37,12 @@ class TaskTest extends TestCase
     public function testStoreForGuest(): void
     {
         $status = TaskStatus::factory()->create();
-        
+
         $response = $this->post(route('tasks.store'), [
             'name' => 'Test Task',
             'status_id' => $status->id,
         ]);
-        
+
         $response->assertRedirect('/login');
         $this->assertDatabaseMissing('tasks', ['name' => 'Test Task']);
     }
@@ -52,7 +52,7 @@ class TaskTest extends TestCase
         $user = User::factory()->create();
         $status = TaskStatus::factory()->create();
         $assignee = User::factory()->create();
-        
+
         $response = $this->actingAs($user)
             ->post(route('tasks.store'), [
                 'name' => 'Test Task',
@@ -60,7 +60,7 @@ class TaskTest extends TestCase
                 'status_id' => $status->id,
                 'assigned_to_id' => $assignee->id,
             ]);
-        
+
         $response->assertRedirect(route('tasks.index'));
         $this->assertDatabaseHas('tasks', [
             'name' => 'Test Task',
@@ -71,7 +71,7 @@ class TaskTest extends TestCase
     public function testShow(): void
     {
         $task = Task::factory()->create();
-        
+
         $response = $this->get(route('tasks.show', $task));
         $response->assertOk();
         $response->assertSee($task->name);
@@ -80,7 +80,7 @@ class TaskTest extends TestCase
     public function testEditForGuest(): void
     {
         $task = Task::factory()->create();
-        
+
         $response = $this->get(route('tasks.edit', $task));
         $response->assertRedirect('/login');
     }
@@ -89,10 +89,10 @@ class TaskTest extends TestCase
     {
         $user = User::factory()->create();
         $task = Task::factory()->create(['created_by_id' => $user->id]);
-        
+
         $response = $this->actingAs($user)
             ->get(route('tasks.edit', $task));
-        
+
         $response->assertOk();
         $response->assertSee($task->name);
     }
@@ -101,12 +101,12 @@ class TaskTest extends TestCase
     {
         $task = Task::factory()->create();
         $status = TaskStatus::factory()->create();
-        
+
         $response = $this->put(route('tasks.update', $task), [
             'name' => 'Updated Task',
             'status_id' => $status->id,
         ]);
-        
+
         $response->assertRedirect('/login');
         $this->assertDatabaseMissing('tasks', ['name' => 'Updated Task']);
     }
@@ -114,7 +114,7 @@ class TaskTest extends TestCase
     public function testDestroyForGuest(): void
     {
         $task = Task::factory()->create();
-        
+
         $response = $this->delete(route('tasks.destroy', $task));
         $response->assertRedirect('/login');
         $this->assertDatabaseHas('tasks', ['id' => $task->id]);
@@ -125,10 +125,10 @@ class TaskTest extends TestCase
         $user = User::factory()->create();
         $creator = User::factory()->create();
         $task = Task::factory()->create(['created_by_id' => $creator->id]);
-        
+
         $response = $this->actingAs($user)
             ->delete(route('tasks.destroy', $task));
-        
+
         $response->assertForbidden();
         $this->assertDatabaseHas('tasks', ['id' => $task->id]);
     }
@@ -137,10 +137,10 @@ class TaskTest extends TestCase
     {
         $user = User::factory()->create();
         $task = Task::factory()->create(['created_by_id' => $user->id]);
-        
+
         $response = $this->actingAs($user)
             ->delete(route('tasks.destroy', $task));
-        
+
         $response->assertRedirect(route('tasks.index'));
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
     }

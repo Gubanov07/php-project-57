@@ -25,23 +25,23 @@ class TaskController extends Controller
             ->with(['status', 'creator', 'assignee'])
             ->paginate(10)
             ->withQueryString();
-        
+
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
-        
+
         return view('tasks.index', compact('tasks', 'statuses', 'users', 'labels'));
     }
-    
+
     public function create()
     {
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
-        
+
         return view('tasks.create', compact('statuses', 'users', 'labels'));
     }
-    
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -52,7 +52,7 @@ class TaskController extends Controller
             'labels' => 'nullable|array',
             'labels.*' => 'exists:labels,id',
         ]);
-        
+
         $task = Task::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
@@ -60,30 +60,30 @@ class TaskController extends Controller
             'created_by_id' => Auth::id(),
             'assigned_to_id' => $validated['assigned_to_id'] ?? null,
         ]);
-        
+
         if (isset($validated['labels'])) {
             $task->labels()->attach($validated['labels']);
         }
-        
+
         flash(__('task.created'))->success();
         return redirect()->route('tasks.index');
     }
-    
+
     public function show(Task $task)
     {
         $task->load(['status', 'creator', 'assignee', 'labels']);
         return view('tasks.show', compact('task'));
     }
-    
+
     public function edit(Task $task)
     {
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
-        
+
         return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
     }
-    
+
     public function update(Request $request, Task $task)
     {
         $validated = $request->validate([
@@ -94,25 +94,25 @@ class TaskController extends Controller
             'labels' => 'nullable|array',
             'labels.*' => 'exists:labels,id',
         ]);
-        
+
         $task->update([
             'name' => $validated['name'],
             'description' => $validated['description'],
             'status_id' => $validated['status_id'],
             'assigned_to_id' => $validated['assigned_to_id'] ?? null,
         ]);
-        
+
         $task->labels()->sync($validated['labels'] ?? []);
-        
+
         flash(__('task.updated'))->success();
         return redirect()->route('tasks.index');
     }
-    
+
     public function destroy(Task $task)
     {
         $this->authorize('delete', $task);
         $task->delete();
-        
+
         flash(__('task.deleted'))->success();
         return redirect()->route('tasks.index');
     }

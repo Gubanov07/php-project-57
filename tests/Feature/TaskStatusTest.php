@@ -26,10 +26,10 @@ class TaskStatusTest extends TestCase
     public function testCreateForUser(): void
     {
         $user = User::factory()->create();
-        
+
         $response = $this->actingAs($user)
             ->get(route('task_statuses.create'));
-        
+
         $response->assertOk();
     }
 
@@ -38,7 +38,7 @@ class TaskStatusTest extends TestCase
         $response = $this->post(route('task_statuses.store'), [
             'name' => 'Test Status'
         ]);
-        
+
         $response->assertRedirect('/login');
         $this->assertDatabaseMissing('task_statuses', ['name' => 'Test Status']);
     }
@@ -46,12 +46,12 @@ class TaskStatusTest extends TestCase
     public function testStoreForUser(): void
     {
         $user = User::factory()->create();
-        
+
         $response = $this->actingAs($user)
             ->post(route('task_statuses.store'), [
                 'name' => 'Test Status'
             ]);
-        
+
         $response->assertRedirect(route('task_statuses.index'));
         $this->assertDatabaseHas('task_statuses', ['name' => 'Test Status']);
     }
@@ -59,7 +59,7 @@ class TaskStatusTest extends TestCase
     public function testEditForGuest(): void
     {
         $status = TaskStatus::factory()->create();
-        
+
         $response = $this->get(route('task_statuses.edit', $status));
         $response->assertRedirect('/login');
     }
@@ -67,11 +67,11 @@ class TaskStatusTest extends TestCase
     public function testUpdateForGuest(): void
     {
         $status = TaskStatus::factory()->create();
-        
+
         $response = $this->put(route('task_statuses.update', $status), [
             'name' => 'Updated Status'
         ]);
-        
+
         $response->assertRedirect('/login');
         $this->assertDatabaseMissing('task_statuses', ['name' => 'Updated Status']);
     }
@@ -79,7 +79,7 @@ class TaskStatusTest extends TestCase
     public function testDestroyForGuest(): void
     {
         $status = TaskStatus::factory()->create();
-        
+
         $response = $this->delete(route('task_statuses.destroy', $status));
         $response->assertRedirect('/login');
         $this->assertDatabaseHas('task_statuses', ['id' => $status->id]);
@@ -89,7 +89,7 @@ class TaskStatusTest extends TestCase
     {
         $user = User::factory()->create();
         $status = TaskStatus::factory()->create();
-        
+
         $response = $this->actingAs($user)
             ->delete(route('task_statuses.destroy', $status));
 
