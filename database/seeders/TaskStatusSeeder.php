@@ -11,17 +11,25 @@ class TaskStatusSeeder extends Seeder
      * Run the database seeds.
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        $statuses = [
-            ['name' => 'новый'],
-            ['name' => 'в работе'],
-            ['name' => 'на тестировании'],
-            ['name' => 'завершен'],
-        ];
-        
-        foreach ($statuses as $status) {
-            TaskStatus::create($status);
-        }
+        DB::table('task_statuses')->insert([
+            [
+                'name' => 'новая',
+                'created_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'завершена',
+                'created_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'выполняется',
+                'created_at' => Carbon::now(),
+            ],
+            [
+                'name' => '	в архиве',
+                'created_at' => Carbon::now(),
+            ],
+        ]);
     }
 }

@@ -9,17 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskStatusController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(TaskStatus::class, 'task_status');
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $taskStatuses = TaskStatus::paginate(10);
-        return view('task_statuses.index', compact('taskStatuses'));
+        return view('taskStatuses.index', compact('taskStatuses'));
     }
 
     /**
@@ -27,7 +23,7 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        return view('task_statuses.create');
+        return view('taskStatuses.create');
     }
 
     /**
@@ -41,44 +37,44 @@ class TaskStatusController extends Controller
 
         $taskStatus = TaskStatus::create($validated);
 
-        flash(__('task_status.created'))->success();
+        flash(__('taskStatuses.created'))->success();
         return redirect()->route('task_statuses.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(TaskStatus $taskStatus)
     {
-        //
+        return view('taskStatuses.show', compact('taskStatus'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TaskStatus $taskStatus)
     {
-        return view('task_statuses.edit', compact('taskStatus'));
+        return view('taskStatuses.edit', compact('taskStatus'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, TaskStatus $taskStatus)
     {
         $validated = $request->validate([
             'name' => [
                 'required',
                 'max:255',
                 'min:1',
-                Rule::unique('task_statuses')->ignore($taskStatus->id),
+                Rule::unique('taskStatuses')->ignore($taskStatus->id),
             ],
         ]);
 
         $taskStatus->update($validated);
 
-        flash(__('task_status.updated'))->success();
-        return redirect()->route('task_statuses.index');
+        flash(__('taskStatuses.updated'))->success();
+        return redirect()->route('taskStatuses.index');
     }
 
     /**
@@ -87,13 +83,13 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         if ($taskStatus->tasks()->exists()) {
-            flash(__('task_status.cannot_delete'))->error();
-            return redirect()->route('task_statuses.index');
+            flash(__('taskStatuses.cannot_delete'))->error();
+            return redirect()->route('taskStatuses.index');
         }
 
         $taskStatus->delete();
 
-        flash(__('task_status.deleted'))->success();
-        return redirect()->route('task_statuses.index');
+        flash(__('taskStatuses.deleted'))->success();
+        return redirect()->route('taskStatuses.index');
     }
 }

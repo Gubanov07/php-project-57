@@ -4,8 +4,6 @@ start:
 start-frontend:
 	npm run dev
 
-install: setup
-
 setup:
 	composer install
 	cp -n .env.example .env

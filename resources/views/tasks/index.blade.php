@@ -9,21 +9,14 @@
         <h1 class="max-w-2xl mb-4 text-4xl leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">{{ __('layout.task_header') }}</h1>
         <div class="w-full flex items-center">
             <div>
-                {{Form::open(['route' => 'tasks.index', 'method' => 'GET'])}}
-                    <div class="flex">
-                        <div>
-                            {{Form::select('filter[status_id]', $taskStatuses, $filter['status_id'] ?? null, ['placeholder' => __('layout.table_task_status'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}
-                        <div >
-                            {{Form::select('filter[created_by_id]', $users, $filter['created_by_id'] ?? null, ['placeholder' => __('layout.table_creater'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}
-                        <div>
-                            {{Form::select('filter[assigned_to_id]', $users, $filter['assigned_to_id'] ?? null, ['placeholder' => __('layout.table_assigned'), 'class' => 'form-select ml-2 rounded border-gray-300'])}}
-                        </div>
-                        <div>
-                            {{Form::submit(__('layout.create_apply'), ['class' => 'ml-2 rounded bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'])}}
-                        </div>
-
-                    </div>
-                {{Form::close()}}
+                {{ html()->form('GET', route('tasks.index'))->open() }}
+                    {{ html()->select('filter[status_id]', $statuses, $filter['status_id'] ?? null)
+                        ->placeholder(__('layout.table_task_status'))
+                        ->class('form-select ml-2 rounded border-gray-300') }}
+                    
+                    {{ html()->submit(__('layout.create_apply'))
+                        ->class('ml-2 rounded bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4') }}
+                {{ html()->form()->close() }}
             </div>
             <div class="ml-auto">
             </div>

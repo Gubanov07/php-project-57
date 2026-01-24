@@ -32,6 +32,11 @@ class LabelController extends Controller
         return redirect()->route('labels.index');
     }
 
+    public function show(Label $label)
+    {
+        return view('labels.show', compact('label'));
+    }
+
     public function edit(Label $label)
     {
         return view('labels.edit', compact('label'));
