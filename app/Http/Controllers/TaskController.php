@@ -65,7 +65,7 @@ class TaskController extends Controller
             $task->labels()->attach($validated['labels']);
         }
 
-        flash(__('task.created'))->success();
+        flash(__('controllers.tasks_create'))->success();
         return redirect()->route('tasks.index');
     }
 
@@ -104,16 +104,19 @@ class TaskController extends Controller
 
         $task->labels()->sync($validated['labels'] ?? []);
 
-        flash(__('task.updated'))->success();
+        flash(__('controllers.tasks_update'))->success();
         return redirect()->route('tasks.index');
     }
 
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task);
-        $task->delete();
-
-        flash(__('task.deleted'))->success();
+        if (Auth::id() === $task->created_by_id) {
+            $task->labels()->detach();
+            $task->delete();
+            flash(__('controllers.tasks_destroy'))->success();
+        } else {
+            flash(__('tasks_destroy_failed'))->error();
+        }
         return redirect()->route('tasks.index');
     }
 }

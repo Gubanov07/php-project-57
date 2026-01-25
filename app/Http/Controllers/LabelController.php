@@ -28,7 +28,7 @@ class LabelController extends Controller
 
         Label::create($validated);
 
-        flash(__('label.created'))->success();
+        flash(__('controllers.label_create'))->success();
         return redirect()->route('labels.index');
     }
 
@@ -51,20 +51,20 @@ class LabelController extends Controller
 
         $label->update($validated);
 
-        flash(__('label.updated'))->success();
+        flash(__('controllers.label_update'))->success();
         return redirect()->route('labels.index');
     }
 
     public function destroy(Label $label)
     {
         if ($label->tasks()->exists()) {
-            flash(__('label.cannot_delete'))->error();
+            flash(__('controllers.label_statuses_destroy_failed'))->error();
             return redirect()->route('labels.index');
         }
 
         $label->delete();
 
-        flash(__('label.deleted'))->success();
+        flash(__('controllers.label_destroy'))->success();
         return redirect()->route('labels.index');
     }
 }
