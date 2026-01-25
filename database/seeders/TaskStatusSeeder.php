@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\TaskStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TaskStatusSeeder extends Seeder
 {
@@ -11,6 +13,7 @@ class TaskStatusSeeder extends Seeder
      * Run the database seeds.
      * @return void
      */
+
     public function run()
     {
         DB::table('task_statuses')->insert([
@@ -19,15 +22,15 @@ class TaskStatusSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'name' => 'завершена',
+                'name' => 'в работе',
                 'created_at' => Carbon::now(),
             ],
             [
-                'name' => 'выполняется',
+                'name' => 'на тестировании',
                 'created_at' => Carbon::now(),
             ],
             [
-                'name' => '	в архиве',
+                'name' => '	завершена',
                 'created_at' => Carbon::now(),
             ],
         ]);
