@@ -42,12 +42,6 @@ lint:
 lint-fix:
 	composer exec phpcbf -- --standard=PSR12 app routes tests
 
-ide-helper:
-	php artisan ide-helper:eloquent
-	php artisan ide-helper:gen
-	php artisan ide-helper:meta
-	php artisan ide-helper:mod -n
-
 sail-migrate-refresh-seed:
 	./vendor/bin/sail artisan migrate:refresh --seed
 
