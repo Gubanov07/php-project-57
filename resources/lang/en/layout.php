@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Task Manager',
-    'name' => 'UP - Task Manager',
+    'name' => 'Task Manager',
     'login' => 'Log in',
     'registration' => 'Registration',
     'logout' => 'Exit',
