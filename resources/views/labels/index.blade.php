@@ -32,7 +32,6 @@
             <td>{{ $label->created_at }}</td>
             @auth()
             <td class="flex space-x-2">
-                {{-- Исправьте ссылку удаления на форму --}}
                 <form action="{{ route('labels.destroy', $label) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')

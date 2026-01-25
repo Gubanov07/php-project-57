@@ -16,8 +16,8 @@
                     </label>
                 </div>
                 <div class="mt-2">
-                    <input type="text" 
-                           name="name" 
+                    <input type="text"
+                           name="name"
                            id="name"
                            value="{{ old('name', $label->name) }}"
                            class="form-control rounded border-gray-300 w-1/3 @error('name') border-red-500 @enderror">
@@ -33,7 +33,7 @@
                     </label>
                 </div>
                 <div class="mt-2">
-                    <textarea name="description" 
+                    <textarea name="description"
                               id="description"
                               class="form-control rounded border-gray-300 w-1/3 @error('description') border-red-500 @enderror">{{ old('description', $label->description) }}</textarea>
                 </div>
@@ -43,7 +43,7 @@
                     @enderror
                 </div>
                 <div class="mt-4">
-                    <button type="submit" 
+                    <button type="submit"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         {{ __('layout.update_button') }}
                     </button>

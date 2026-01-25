@@ -29,19 +29,18 @@
             <td>{{ $taskStatus->name }}</td>
             <td>{{ $taskStatus->created_at }}</td>
             @auth()
-            <td>
-                <a
-                    class="text-red-600 hover:text-red-900"
-                    rel="nofollow"
-                    data-method="delete"
-                    data-confirm="{{ __('layout.table_delete_question') }}"
-                    href="{{ route('task_statuses.destroy', $taskStatus) }}"
-                >
-                    {{ __('layout.table_delete') }}
-                </a>
+            <td class="flex space-x-2">
+                <form action="{{ route('task_statuses.destroy', $taskStatus) }}" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                            class="text-red-600 hover:text-red-900"
+                            onclick="return confirm('{{ __('layout.table_delete_question') }}')">
+                        {{ __('layout.table_delete') }}
+                    </button>
+                </form>
                 <a class="text-blue-600 hover:text-blue-900"
-                   href="{{ route("task_statuses.edit", $taskStatus) }}"
-                >
+                   href="{{ route("task_statuses.edit", $taskStatus) }}">
                     {{ __('layout.table_edit') }}
                 </a>
             </td>

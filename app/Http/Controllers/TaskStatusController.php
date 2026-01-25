@@ -46,7 +46,7 @@ class TaskStatusController extends Controller
      */
     public function show(TaskStatus $taskStatus)
     {
-        return view('taskStatuses.show', compact('taskStatus'));
+        return redirect()->route('task_statuses.index');
     }
 
     /**
@@ -54,7 +54,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        return view('taskStatuses.edit', compact('taskStatus'));
+        return view('task_statuses.edit', compact('taskStatus'));
     }
 
     /**
@@ -74,7 +74,7 @@ class TaskStatusController extends Controller
         $taskStatus->update($validated);
 
         flash(__('controllers.task_statuses_update'))->success();
-        return redirect()->route('taskStatuses.index');
+        return redirect()->route('task_statuses.index');
     }
 
     /**
@@ -84,12 +84,12 @@ class TaskStatusController extends Controller
     {
         if ($taskStatus->tasks()->exists()) {
             flash(__('controllers.task_statuses_destroy_failed'))->error();
-            return redirect()->route('taskStatuses.index');
+            return redirect()->route('task_statuses.index');
         }
 
         $taskStatus->delete();
 
         flash(__('controllers.task_statuses_destroy'))->success();
-        return redirect()->route('taskStatuses.index');
+        return redirect()->route('task_statuses.index');
     }
 }
