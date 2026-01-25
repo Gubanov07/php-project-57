@@ -1,21 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
-    'failed' => 'Введите правильные имя пользователя и пароль',
-    'password' => 'Предоставленный пароль неверен.',
-    'throttle' => 'Слишком много попыток входа. Повторите попытку через :seconds секунд.',
+    'failed'   => 'Неверное имя пользователя или пароль.',
+    'Log in'   => 'Войти',
+    'password' => 'Некорректный пароль.',
     'Register' => 'Зарегистрировать',
-    'Log in' => 'Войти',
+    'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте ещё раз через :seconds секунд.',
 ];

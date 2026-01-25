@@ -48,7 +48,7 @@
             @foreach($tasks as $task)
                 <tr class="border-b border-dashed text-left">
                     <td>{{ $task->id }}</td>
-                    <td>{{ $taskStatuses[$task->status_id] }}</td>
+                    <td>{{ $statuses[$task->status_id] }}</td>
                     <td><a href="{{ route('tasks.show', $task) }}">{{ $task->name }}</a></td>
                     <td>{{ $users[$task->created_by_id] }}</td>
                     <td>{{ $users[$task->assigned_to_id] }}</td>

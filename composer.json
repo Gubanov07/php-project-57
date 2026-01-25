@@ -22,6 +22,8 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "laravel-lang/lang": "^15.27",
+        "laravel-lang/publisher": "^16.7",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^8.1",
