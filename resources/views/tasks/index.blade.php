@@ -72,7 +72,7 @@
                             >
                                 {{ __('layout.table_edit') }}
                             </a>
-                                @endcan
+                            @endcan
                         </td>
                     @endauth
                 </tr>
