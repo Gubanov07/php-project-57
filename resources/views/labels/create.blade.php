@@ -4,8 +4,6 @@
 @auth()
     <div class="grid col-span-full">
         <h1 class="max-w-2xl mb-4 text-4xl leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">{{ __('layout.labels_create') }}</h1>
-
-        {{-- Замените Form::open на обычную форму --}}
         <form action="{{ route('labels.store') }}" method="POST" class="w-50">
             @csrf
             

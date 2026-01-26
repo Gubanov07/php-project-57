@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\TaskStatus;
 use App\Models\Label;
 use App\Models\User;
 use App\Models\Task;
@@ -29,7 +30,7 @@ class LabelTest extends TestCase
             ->get(route('labels.create'));
 
         $response->assertOk();
-        $response->assertSee(__('label.create_label'));
+        $response->assertSee(__('layout.labels_create'));
     }
 
     public function testStoreForGuest(): void

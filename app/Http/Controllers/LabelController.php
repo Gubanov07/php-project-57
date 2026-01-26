@@ -24,7 +24,7 @@ class LabelController extends Controller
         if (Auth::guest()) {
              return redirect()->route('labels.index');
         }
-        $validated = $request->validated();
+        $validated = $request->validate();
         $label = new Label();
 
         $label->fill($validated);
@@ -45,7 +45,7 @@ class LabelController extends Controller
             return redirect()->route('labels.index');
         }
 
-        $validated = $request->validated();
+        $validated = $request->validate();
 
         $label->fill($validated);
         $label->save();

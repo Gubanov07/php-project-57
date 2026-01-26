@@ -35,14 +35,11 @@ class TaskStatusController extends Controller
             return redirect()->route('task_statuses.index');
         }
 
-        $validated = $request->validate([
-            'name' => 'required|unique:task_statuses|max:255|min:1',
-        ]);
-
+        $validated = $request->validate();
         $taskStatus = new TaskStatus();
+
         $taskStatus->fill($validated);
         $taskStatus->save();
-
         $message = __('controllers.task_statuses_create');
         flash($message)->success();
         return redirect()->route('task_statuses.index');

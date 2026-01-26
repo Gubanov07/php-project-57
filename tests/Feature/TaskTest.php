@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Label;
 use App\Models\TaskStatus;
 
 class TaskTest extends TestCase
@@ -31,7 +32,7 @@ class TaskTest extends TestCase
             ->get(route('tasks.create'));
 
         $response->assertOk();
-        $response->assertSee(__('task.create_task'));
+        $response->assertSee(__('layout.tasks_create'));
     }
 
     public function testStoreForGuest(): void
