@@ -34,6 +34,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit"
+                            dusk="delete-btn-{{ $taskStatus->id }}"
                             class="text-red-600 hover:text-red-900"
                             onclick="return confirm('{{ __('layout.table_delete_question') }}')">
                         {{ __('layout.table_delete') }}
