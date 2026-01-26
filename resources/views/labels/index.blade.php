@@ -37,6 +37,7 @@
                     @method('DELETE')
                     <button type="submit"
                             class="text-red-600 hover:text-red-900"
+                            dusk="delete-label-btn-{{ $label->id }}"
                             onclick="return confirm('{{ __('layout.table_delete_question') }}')">
                         {{ __('layout.table_delete') }}
                     </button>

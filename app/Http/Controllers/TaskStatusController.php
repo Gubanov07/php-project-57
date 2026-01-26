@@ -31,13 +31,17 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:task_statuses|max:255|min:1',
-        ]);
+        if (Auth::guest()) {
+            return redirect()->route('task_statuses.index');
+        }
 
-        $taskStatus = TaskStatus::create($validated);
+        $validated = $request->validated();
+        $taskStatus = new TaskStatus();
 
-        flash(__('controllers.task_statuses_create'))->success();
+        $taskStatus->fill($validated);
+        $taskStatus->save();
+        $message = __('controllers.task_statuses_create');
+        flash($message)->success();
         return redirect()->route('task_statuses.index');
     }
 

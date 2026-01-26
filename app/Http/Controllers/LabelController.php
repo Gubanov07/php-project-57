@@ -21,20 +21,17 @@ class LabelController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:labels|max:255|min:1',
-            'description' => 'nullable|string',
-        ]);
+        if (Auth::guest()) {
+             return redirect()->route('labels.index');
+        }
+        $validated = $request->validated();
+        $label = new Label();
 
-        Label::create($validated);
+        $label->fill($validated);
+        $label->save();
 
         flash(__('controllers.label_create'))->success();
         return redirect()->route('labels.index');
-    }
-
-    public function show(Label $label)
-    {
-        return view('labels.show', compact('label'));
     }
 
     public function edit(Label $label)
@@ -44,12 +41,14 @@ class LabelController extends Controller
 
     public function update(Request $request, Label $label)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255|min:1|unique:labels,name,' . $label->id,
-            'description' => 'nullable|string',
-        ]);
+        if (Auth::guest()) {
+            return redirect()->route('labels.index');
+        }
 
-        $label->update($validated);
+        $validated = $request->validated();
+
+        $label->fill($validated);
+        $label->save();
 
         flash(__('controllers.label_update'))->success();
         return redirect()->route('labels.index');
@@ -59,7 +58,7 @@ class LabelController extends Controller
     {
         if ($label->tasks()->exists()) {
             flash(__('controllers.label_statuses_destroy_failed'))->error();
-            return redirect()->route('labels.index');
+            return back();
         }
 
         $label->delete();
