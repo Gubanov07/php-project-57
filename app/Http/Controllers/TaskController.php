@@ -115,7 +115,7 @@ class TaskController extends Controller
             $task->delete();
             flash(__('controllers.tasks_destroy'))->success();
         } else {
-            flash(__('tasks_destroy_failed'))->error();
+            flash(__('controllers.tasks_destroy_failed'))->error();
         }
         return redirect()->route('tasks.index');
     }

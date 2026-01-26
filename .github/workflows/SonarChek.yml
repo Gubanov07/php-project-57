@@ -46,11 +46,13 @@ jobs:
         run: make setup
 
       - name: Setup environment
-        run:
+        run: |
           cp .env.example .env
           php artisan key:generate --ansi
           echo "DB_CONNECTION=sqlite" >> .env
           echo "DB_DATABASE=database/database.sqlite" >> .env
+          mkdir -p database
+          touch database/database.sqlite
 
       - name: Run migrations
         run: php artisan migrate --force

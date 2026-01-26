@@ -54,7 +54,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        return view('task_statuses.edit', compact('taskStatus'));
+        return view('taskStatuses.edit', compact('taskStatus'));
     }
 
     /**
@@ -67,7 +67,7 @@ class TaskStatusController extends Controller
                 'required',
                 'max:255',
                 'min:1',
-                Rule::unique('taskStatuses')->ignore($taskStatus->id),
+                Rule::unique('task_statuses')->ignore($taskStatus->id),
             ],
         ]);
 
