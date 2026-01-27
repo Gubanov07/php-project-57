@@ -11,7 +11,7 @@ class StoreLabelRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(): array
+    public function authorize(): bool
     {
         return true;
     }
