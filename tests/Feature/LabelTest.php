@@ -34,17 +34,19 @@ class LabelTest extends TestCase
     {
         $response = $this->actingAs($this->user)
             ->withSession(['banned' => false])
-            ->post(route('labels.store'), $this->data);
+            ->post(route('labels.store', $this->data));
 
         $response->assertRedirect(route('labels.index'));
+
         $this->assertDatabaseHas('labels', $this->data);
     }
 
     public function testNotStoreLabelWithoutAuthorized(): void
     {
-        $response = $this->post(route('labels.store'), $this->data);
-        
-        $response->assertRedirect('/login');
+        $response = $this->post(route('labels.store', $this->data));
+
+        $response->assertRedirect(route('labels.index'));
+
         $this->assertDatabaseMissing('labels', $this->data);
     }
 
@@ -64,14 +66,16 @@ class LabelTest extends TestCase
             ->put(route('labels.update', $this->label), $this->data);
 
         $response->assertRedirect(route('labels.index'));
+
         $this->assertDatabaseHas('labels', $this->data);
     }
 
     public function testNotUpdateLabelWithoutAuthorized(): void
     {
         $response = $this->put(route('labels.update', $this->label), $this->data);
-        
-        $response->assertRedirect('/login');
+
+        $response->assertRedirect(route('labels.index'));
+
         $this->assertDatabaseMissing('labels', $this->data);
     }
 
@@ -82,13 +86,14 @@ class LabelTest extends TestCase
             ->delete(route('labels.destroy', $this->label));
 
         $response->assertRedirect(route('labels.index'));
+
         $this->assertDatabaseMissing('labels', $this->label->only(['name', 'description']));
     }
 
     public function testNotCreatePageLabelUnauthorized(): void
     {
         $response = $this->get(route('labels.create'));
-        
-        $response->assertRedirect('/login');
+
+        $response->assertStatus(403);
     }
 }

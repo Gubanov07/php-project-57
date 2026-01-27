@@ -35,17 +35,19 @@ class TaskStatusTest extends TestCase
     {
         $response = $this->actingAs($this->user)
             ->withSession(['banned' => false])
-            ->post(route('task_statuses.store'), $this->data);
+            ->post(route('task_statuses.store', $this->data));
 
         $response->assertRedirect(route('task_statuses.index'));
+
         $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
     public function testNotCreateStoreTaskStatusWithoutAuthorized(): void
     {
-        $response = $this->post(route('task_statuses.store'), $this->data);
-        $response->assertRedirect('/login');
-        
+        $response = $this->post(route('task_statuses.store', $this->data));
+
+        $response->assertRedirect(route('task_statuses.index'));
+
         $this->assertDatabaseMissing('task_statuses', $this->data);
     }
 
@@ -65,14 +67,16 @@ class TaskStatusTest extends TestCase
             ->put(route('task_statuses.update', $this->taskStatus), $this->data);
 
         $response->assertRedirect(route('task_statuses.index'));
+
         $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
     public function testNotUpdateTaskStatusWithoutAuthorized(): void
     {
         $response = $this->put(route('task_statuses.update', $this->taskStatus), $this->data);
-        $response->assertRedirect('/login');
-        
+
+        $response->assertRedirect(route('task_statuses.index'));
+
         $this->assertDatabaseMissing('task_statuses', $this->data);
     }
 
@@ -83,12 +87,14 @@ class TaskStatusTest extends TestCase
             ->delete(route('task_statuses.destroy', $this->taskStatus));
 
         $response->assertRedirect(route('task_statuses.index'));
+
         $this->assertDatabaseMissing('task_statuses', $this->taskStatus->only(['name']));
     }
 
     public function testNotCreateTaskStatusUnauthorized(): void
     {
         $response = $this->get(route('task_statuses.create'));
-        $response->assertRedirect('/login');
+
+        $response->assertStatus(403);
     }
 }
