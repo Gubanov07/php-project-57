@@ -24,7 +24,10 @@ class LabelController extends Controller
         if (Auth::guest()) {
              return redirect()->route('labels.index');
         }
-        $validated = $request->validate();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
         $label = new Label();
 
         $label->fill($validated);
@@ -45,7 +48,10 @@ class LabelController extends Controller
             return redirect()->route('labels.index');
         }
 
-        $validated = $request->validate();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:labels,name,' . $label->id,
+            'description' => 'nullable|string',
+        ]);
 
         $label->fill($validated);
         $label->save();

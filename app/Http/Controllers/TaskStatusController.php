@@ -35,7 +35,9 @@ class TaskStatusController extends Controller
             return redirect()->route('task_statuses.index');
         }
 
-        $validated = $request->validate();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:task_statuses',
+        ]);
         $taskStatus = new TaskStatus();
 
         $taskStatus->fill($validated);

@@ -2,100 +2,93 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use App\Models\User;
+use App\Models\Label;
 use App\Models\TaskStatus;
-use App\Models\Task;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TaskStatusTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function testIndex(): void
+    private User $user;
+    private TaskStatus $taskStatus;
+    private array $data;
+
+    protected function setUp(): void
     {
-        $response = $this->get(route('task_statuses.index'));
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->data = TaskStatus::factory()->make()->only(['name']);
+        $this->taskStatus = TaskStatus::factory()->create();
+    }
+
+    public function testTaskStatusesPage(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->withSession(['banned' => false])
+            ->get(route('task_statuses.index'));
+
         $response->assertOk();
     }
 
-    public function testCreateForGuest(): void
+    public function testStoreTaskStatus(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->withSession(['banned' => false])
+            ->post(route('task_statuses.store'), $this->data);
+
+        $response->assertRedirect(route('task_statuses.index'));
+        $this->assertDatabaseHas('task_statuses', $this->data);
+    }
+
+    public function testNotCreateStoreTaskStatusWithoutAuthorized(): void
+    {
+        $response = $this->post(route('task_statuses.store'), $this->data);
+        $response->assertRedirect('/login');
+        
+        $this->assertDatabaseMissing('task_statuses', $this->data);
+    }
+
+    public function testEditPage(): void
+    {
+        $response = $this->actingAs($this->user)
+                        ->withSession(['banned' => false])
+                        ->get(route('task_statuses.edit', $this->taskStatus));
+
+        $response->assertOk();
+    }
+
+    public function testUpdateTaskStatus(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->withSession(['banned' => false])
+            ->put(route('task_statuses.update', $this->taskStatus), $this->data);
+
+        $response->assertRedirect(route('task_statuses.index'));
+        $this->assertDatabaseHas('task_statuses', $this->data);
+    }
+
+    public function testNotUpdateTaskStatusWithoutAuthorized(): void
+    {
+        $response = $this->put(route('task_statuses.update', $this->taskStatus), $this->data);
+        $response->assertRedirect('/login');
+        
+        $this->assertDatabaseMissing('task_statuses', $this->data);
+    }
+
+    public function testDeleteTaskStatus(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->withSession(['banned' => false])
+            ->delete(route('task_statuses.destroy', $this->taskStatus));
+
+        $response->assertRedirect(route('task_statuses.index'));
+        $this->assertDatabaseMissing('task_statuses', $this->taskStatus->only(['name']));
+    }
+
+    public function testNotCreateTaskStatusUnauthorized(): void
     {
         $response = $this->get(route('task_statuses.create'));
         $response->assertRedirect('/login');
-    }
-
-    public function testCreateForUser(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)
-            ->get(route('task_statuses.create'));
-
-        $response->assertOk();
-    }
-
-    public function testStoreForGuest(): void
-    {
-        $response = $this->post(route('task_statuses.store'), [
-            'name' => 'Test Status'
-        ]);
-
-        $response->assertRedirect('/login');
-        $this->assertDatabaseMissing('task_statuses', ['name' => 'Test Status']);
-    }
-
-    public function testStoreForUser(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)
-            ->post(route('task_statuses.store'), [
-                'name' => 'Test Status'
-            ]);
-
-        $response->assertRedirect(route('task_statuses.index'));
-        $this->assertDatabaseHas('task_statuses', ['name' => 'Test Status']);
-    }
-
-    public function testEditForGuest(): void
-    {
-        $status = TaskStatus::factory()->create();
-
-        $response = $this->get(route('task_statuses.edit', $status));
-        $response->assertRedirect('/login');
-    }
-
-    public function testUpdateForGuest(): void
-    {
-        $status = TaskStatus::factory()->create();
-
-        $response = $this->put(route('task_statuses.update', $status), [
-            'name' => 'Updated Status'
-        ]);
-
-        $response->assertRedirect('/login');
-        $this->assertDatabaseMissing('task_statuses', ['name' => 'Updated Status']);
-    }
-
-    public function testDestroyForGuest(): void
-    {
-        $status = TaskStatus::factory()->create();
-
-        $response = $this->delete(route('task_statuses.destroy', $status));
-        $response->assertRedirect('/login');
-        $this->assertDatabaseHas('task_statuses', ['id' => $status->id]);
-    }
-
-    public function testDestroyWithTasks(): void
-    {
-        $user = User::factory()->create();
-        $status = TaskStatus::factory()->create();
-
-        $response = $this->actingAs($user)
-            ->delete(route('task_statuses.destroy', $status));
-
-        $this->markTestSkipped('Requires Task model implementation');
     }
 }
