@@ -14,7 +14,7 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
-       DB::table('tasks')->insert([
+        DB::table('tasks')->insert([
             [
                 'status_id' => 1,
                 'name' => 'Исправить баг в авторизации',
