@@ -13,6 +13,14 @@
                     {{ html()->select('filter[status_id]', $statuses, $filter['status_id'] ?? null)
                         ->placeholder(__('layout.table_task_status'))
                         ->class('form-select ml-2 rounded border-gray-300') }}
+
+                    {{ html()->select('filter[created_by_id]', $users, $filter['created_by_id'] ?? null)
+                        ->placeholder(__('layout.table_creater'))
+                        ->class('form-select ml-2 rounded border-gray-300') }}
+                    
+                    {{ html()->select('filter[assigned_to_id]', $users, $filter['assigned_to_id'] ?? null)
+                        ->placeholder(__('layout.table_assigned'))
+                        ->class('form-select ml-2 rounded border-gray-300') }}
                     
                     {{ html()->submit(__('layout.create_apply'))
                         ->class('ml-2 rounded bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4') }}
