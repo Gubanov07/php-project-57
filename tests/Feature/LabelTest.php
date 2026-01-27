@@ -10,6 +10,9 @@ use Tests\TestCase;
 class LabelTest extends TestCase
 {
     private User $user;
+    /**
+     * @var Label
+     */
     private Label $label;
     private array $data;
 

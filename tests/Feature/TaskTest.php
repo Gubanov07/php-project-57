@@ -137,7 +137,7 @@ class TaskTest extends TestCase
             ->withSession(['banned' => false])
             ->post(route('tasks.store'), $taskData);
 
-        $createdTask = Task::where('name', $taskData['name'])->first();
+        $createdTask = Task::factory()->create(['created_by_id' => $this->user->id]);
 
         $user2 = User::factory()->create();
         $responseUser2 = $this->actingAs($user2)

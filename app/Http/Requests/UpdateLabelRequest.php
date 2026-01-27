@@ -21,7 +21,7 @@ class UpdateLabelRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|max:255',
@@ -34,7 +34,7 @@ class UpdateLabelRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => __('controllers.required_error'),
