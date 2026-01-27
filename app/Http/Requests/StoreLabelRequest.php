@@ -11,7 +11,7 @@ class StoreLabelRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): array
     {
         return true;
     }
@@ -32,7 +32,7 @@ class StoreLabelRequest extends FormRequest
     /**
      * Get the error messages for the defined validation rules.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function messages(): array
     {
