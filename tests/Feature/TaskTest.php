@@ -12,7 +12,6 @@ class TaskTest extends TestCase
 {
     private User $user;
     private Task $task;
-    private array $data;
 
     protected function setUp(): void
     {
@@ -20,14 +19,6 @@ class TaskTest extends TestCase
         $this->user = User::factory()->create();
         TaskStatus::factory()->create();
         $this->task = Task::factory()->create();
-        $this->data = $this->task->only(
-            [
-                'name',
-                'description',
-                'status_id',
-                'assigned_to_id',
-            ]
-        );
     }
 
     public function testTasksPage(): void
@@ -137,7 +128,7 @@ class TaskTest extends TestCase
             ->withSession(['banned' => false])
             ->post(route('tasks.store'), $taskData);
 
-        $createdTask = Task::factory()->create(['created_by_id' => $this->user->id]);
+        $createdTask = Task::where('name', $taskData['name'])->first();
 
         $user2 = User::factory()->create();
         $responseUser2 = $this->actingAs($user2)
