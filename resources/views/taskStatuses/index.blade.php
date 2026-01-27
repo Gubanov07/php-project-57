@@ -3,12 +3,12 @@
 
 <div class="grid col-span-full">
     <h1 class="max-w-2xl mb-4 text-4xl leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">
-        {{ __('layout.task_statuses_header') }} </h1>
+        {{ __('layout.task_statuses_header') }}</h1>
     @auth()
     <div>
         @csrf
         <a href="{{ route('task_statuses.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            {{ __('layout.create_button_task_statuses') }}           </a>
+            {{ __('layout.create_button_task_statuses') }}</a>
     </div>
     @endauth
     <table class="mt-4">
@@ -29,17 +29,13 @@
             <td>{{ $taskStatus->name }}</td>
             <td>{{ $taskStatus->created_at }}</td>
             @auth()
-            <td class="flex space-x-2">
-                <form action="{{ route('task_statuses.destroy', $taskStatus) }}" method="POST" class="inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
-                            dusk="delete-btn-{{ $taskStatus->id }}"
-                            class="text-red-600 hover:text-red-900"
-                            onclick="return confirm('{{ __('layout.table_delete_question') }}')">
-                        {{ __('layout.table_delete') }}
-                    </button>
-                </form>
+            <td>
+                <a
+                    class="text-red-600 hover:text-red-900" rel="nofollow" data-method="delete"
+                    data-confirm="{{ __('layout.table_delete_question') }}"
+                    href="{{ route("task_statuses.destroy", $taskStatus) }}">
+                    {{ __('layout.table_delete') }}
+                </a>
                 <a class="text-blue-600 hover:text-blue-900"
                    href="{{ route("task_statuses.edit", $taskStatus) }}">
                     {{ __('layout.table_edit') }}

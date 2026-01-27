@@ -34,10 +34,9 @@ class LabelTest extends TestCase
     {
         $response = $this->actingAs($this->user)
             ->withSession(['banned' => false])
-            ->post(route('labels.store', $this->data));
+            ->post(route('labels.store'), $this->data);
 
         $response->assertRedirect(route('labels.index'));
-
         $this->assertDatabaseHas('labels', $this->data);
     }
 
@@ -66,7 +65,6 @@ class LabelTest extends TestCase
             ->put(route('labels.update', $this->label), $this->data);
 
         $response->assertRedirect(route('labels.index'));
-
         $this->assertDatabaseHas('labels', $this->data);
     }
 
@@ -75,7 +73,6 @@ class LabelTest extends TestCase
         $response = $this->put(route('labels.update', $this->label), $this->data);
 
         $response->assertRedirect(route('labels.index'));
-
         $this->assertDatabaseMissing('labels', $this->data);
     }
 
@@ -86,7 +83,6 @@ class LabelTest extends TestCase
             ->delete(route('labels.destroy', $this->label));
 
         $response->assertRedirect(route('labels.index'));
-
         $this->assertDatabaseMissing('labels', $this->label->only(['name', 'description']));
     }
 

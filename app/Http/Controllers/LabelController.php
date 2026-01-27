@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreLabelRequest;
+use App\Http\Requests\UpdateLabelRequest;
 use App\Models\Label;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,18 +18,18 @@ class LabelController extends Controller
 
     public function create()
     {
+        if (Auth::guest()) {
+            return abort(403);
+        }
         return view('labels.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreLabelRequest $request)
     {
         if (Auth::guest()) {
              return redirect()->route('labels.index');
         }
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
         $label = new Label();
 
         $label->fill($validated);
@@ -42,16 +44,18 @@ class LabelController extends Controller
         return view('labels.edit', compact('label'));
     }
 
-    public function update(Request $request, Label $label)
+    public function show(Label $label)
+{
+    return redirect()->route('labels.index');
+}
+
+    public function update(UpdateLabelRequest $request, Label $label)
     {
         if (Auth::guest()) {
             return redirect()->route('labels.index');
         }
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:labels,name,' . $label->id,
-            'description' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $label->fill($validated);
         $label->save();

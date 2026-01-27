@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
@@ -35,6 +37,10 @@ class TaskController extends Controller
 
     public function create()
     {
+        if (Auth::guest()) {
+            return abort(403);
+        }
+
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
@@ -42,16 +48,13 @@ class TaskController extends Controller
         return view('tasks.create', compact('statuses', 'users', 'labels'));
     }
 
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255|min:1',
-            'description' => 'nullable|string',
-            'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id',
-            'labels' => 'nullable|array',
-            'labels.*' => 'exists:labels,id',
-        ]);
+        if (Auth::guest()) {
+            return redirect()->route('tasks.index');
+        }
+
+        $validated = $request->validated();
 
         $task = Task::create([
             'name' => $validated['name'],
@@ -77,6 +80,9 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
+        if (Auth::guest()) {
+            abort(403);
+        }
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
@@ -84,17 +90,13 @@ class TaskController extends Controller
         return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
     }
 
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255|min:1',
-            'description' => 'nullable|string',
-            'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id',
-            'labels' => 'nullable|array',
-            'labels.*' => 'exists:labels,id',
-        ]);
-
+        if (Auth::guest()) {
+            return redirect()->route('tasks.index');
+        }
+        
+        $validated = $request->validated();
         $task->update([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
