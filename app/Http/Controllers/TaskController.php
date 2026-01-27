@@ -95,7 +95,7 @@ class TaskController extends Controller
         if (Auth::guest()) {
             return redirect()->route('tasks.index');
         }
-        
+
         $validated = $request->validated();
         $task->update([
             'name' => $validated['name'],

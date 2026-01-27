@@ -58,7 +58,7 @@
                             @can('delete', $task)
                             <a
                                 class="text-red-600 hover:text-red-900"
-                                dusk="delete-label-btn-{{ $label->id }}"
+                                dusk="delete-task-btn-{{ $task->id }}"
                                 rel="nofollow"
                                 data-method="delete"
                                 data-confirm="{{ __('layout.table_delete_question') }}"
