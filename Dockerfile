@@ -12,14 +12,10 @@ RUN apt-get install -y nodejs
 
 WORKDIR /app
 
-COPY composer.json composer.lock ./
-COPY package.json package-lock.json ./
+COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 RUN npm ci --no-audit --no-fund
-
-COPY . .
-
 RUN npm run build
 
 RUN > database/database.sqlite
