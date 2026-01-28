@@ -13,7 +13,7 @@ RUN apt-get install -y nodejs
 COPY . .
 
 RUN composer install
-RUN npm install --production=false
+RUN npm ci
 RUN npm run build
 
 RUN > database/database.sqlite
