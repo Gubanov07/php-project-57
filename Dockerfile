@@ -10,10 +10,16 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
 RUN apt-get install -y nodejs
 
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+COPY package.json package-lock.json ./
+
+RUN composer install --no-dev --optimize-autoloader
+RUN npm ci --no-audit --no-fund
+
 COPY . .
 
-RUN composer install
-RUN npm ci
 RUN npm run build
 
 RUN > database/database.sqlite
