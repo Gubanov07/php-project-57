@@ -18,6 +18,6 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm ci --no-audit --no-fund
 RUN npm run build
 
-RUN > database/database.sqlite
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
 
 CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
