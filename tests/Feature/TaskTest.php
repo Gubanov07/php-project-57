@@ -70,7 +70,6 @@ class TaskTest extends TestCase
 
     public function testUpdateTask(): void
     {
-        
         $data = Task::factory()->make()->only([
             'name',
             'description',
