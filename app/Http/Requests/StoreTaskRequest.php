@@ -44,7 +44,6 @@ class StoreTaskRequest extends FormRequest
             'status_id.required' => __('controllers.required_error'),
             'assigned_to_id.required' => __('controllers.required_error'),
             'name.max' => __('controllers.max_error'),
-            'description.max' => __('controllers.max_error'),
         ];
     }
 }

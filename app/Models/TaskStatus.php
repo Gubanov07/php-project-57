@@ -18,6 +18,6 @@ class TaskStatus extends Model
 
     public function tasks(): HasMany
     {
-        return $this->hasMany('App\Models\Task', 'status_id');
+        return $this->hasMany(Task::class, 'status_id');
     }
 }

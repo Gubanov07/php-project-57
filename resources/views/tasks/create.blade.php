@@ -37,7 +37,7 @@
                     <select name="status_id" id="status_id" class="form-control rounded border-gray-300 w-1/3">
                         <option value="" selected disabled>----------</option>
                         @foreach($statuses as $id => $name)
-                            <option value="{{ $id }}" {{ old('status_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                            <option value="{{ $id }}" @selected(old('status_id') == $id)>{{ $name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -53,7 +53,7 @@
                     <select name="assigned_to_id" id="assigned_to_id" class="form-control rounded border-gray-300 w-1/3">
                         <option value="" selected>----------</option>
                         @foreach($users as $id => $name)
-                            <option value="{{ $id }}" {{ old('assigned_to_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                            <option value="{{ $id }}" @selected(old('assigned_to_id') == $id)>{{ $name }}</option>
                         @endforeach
                     </select>
                 </div>

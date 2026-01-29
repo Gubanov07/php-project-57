@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLabelRequest;
 use App\Http\Requests\UpdateLabelRequest;
 use App\Models\Label;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LabelController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $labels = Label::paginate(10);
@@ -18,9 +21,7 @@ class LabelController extends Controller
 
     public function create()
     {
-        if (Auth::guest()) {
-            return abort(403);
-        }
+        $this->authorize('create', Label::class);
         return view('labels.create');
     }
 

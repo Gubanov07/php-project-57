@@ -8,6 +8,7 @@ use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -15,6 +16,8 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(Request $request)
     {
         $tasks = QueryBuilder::for(Task::class)
@@ -37,10 +40,7 @@ class TaskController extends Controller
 
     public function create()
     {
-        if (Auth::guest()) {
-            return abort(403);
-        }
-
+        $this->authorize('create', Task::class);
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
@@ -55,14 +55,9 @@ class TaskController extends Controller
         }
 
         $validated = $request->validated();
+        $validated['created_by_id'] = auth()->id();
 
-        $task = Task::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-            'status_id' => $validated['status_id'],
-            'created_by_id' => Auth::id(),
-            'assigned_to_id' => $validated['assigned_to_id'] ?? null,
-        ]);
+        $task = Task::create($validated);
 
         if (isset($validated['labels'])) {
             $task->labels()->attach($validated['labels']);
@@ -80,9 +75,7 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        if (Auth::guest()) {
-            abort(403);
-        }
+        $this->authorize('create', Task::class);
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
@@ -112,7 +105,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        if (Auth::id() === $task->created_by_id) {
+        if ($this->authorize('delete', $task)) {
             $task->labels()->detach();
             $task->delete();
             flash(__('controllers.tasks_destroy'))->success();

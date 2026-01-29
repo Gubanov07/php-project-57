@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskStatusRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Models\TaskStatus;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class TaskStatusController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $taskStatuses = TaskStatus::paginate(10);
@@ -18,9 +21,7 @@ class TaskStatusController extends Controller
 
     public function create()
     {
-        if (Auth::guest()) {
-            return abort(403);
-        }
+        $this->authorize('create', TaskStatus::class);
         return view('taskStatuses.create');
     }
 
@@ -35,9 +36,8 @@ class TaskStatusController extends Controller
 
         $taskStatus->fill($validated);
         $taskStatus->save();
-        $message = __('controllers.task_statuses_create');
-        flash($message)->success();
-        return redirect()->route('task_statuses.index');
+        return redirect()->route('task_statuses.index')
+            ->with('success', __('flashes.statuses.store.success'));
     }
 
     public function show(TaskStatus $taskStatus)

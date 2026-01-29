@@ -24,7 +24,6 @@ class LabelTest extends TestCase
     public function testLabelsPage(): void
     {
         $response = $this->actingAs($this->user)
-            ->withSession(['banned' => false])
             ->get(route('labels.index'));
 
         $response->assertOk();
@@ -33,7 +32,6 @@ class LabelTest extends TestCase
     public function testStoreLabel(): void
     {
         $response = $this->actingAs($this->user)
-            ->withSession(['banned' => false])
             ->post(route('labels.store'), $this->data);
 
         $response->assertRedirect(route('labels.index'));
@@ -52,8 +50,7 @@ class LabelTest extends TestCase
     public function testEditPageLabel(): void
     {
         $response = $this->actingAs($this->user)
-                        ->withSession(['banned' => false])
-                        ->get(route('labels.edit', $this->label));
+            ->get(route('labels.edit', $this->label));
 
         $response->assertOk();
     }
@@ -61,7 +58,6 @@ class LabelTest extends TestCase
     public function testUpdateLabel(): void
     {
         $response = $this->actingAs($this->user)
-            ->withSession(['banned' => false])
             ->put(route('labels.update', $this->label), $this->data);
 
         $response->assertRedirect(route('labels.index'));
@@ -79,7 +75,6 @@ class LabelTest extends TestCase
     public function testDeleteLabel(): void
     {
         $response = $this->actingAs($this->user)
-            ->withSession(['banned' => false])
             ->delete(route('labels.destroy', $this->label));
 
         $response->assertRedirect(route('labels.index'));

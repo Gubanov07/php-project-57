@@ -42,7 +42,7 @@
                         <select name="status_id" id="status_id" class="form-control rounded border-gray-300 w-1/3">
                             <option value="">----------</option>
                             @foreach($statuses as $id => $name)
-                                <option value="{{ $id }}" {{ old('status_id', $task->status_id) == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                <option value="{{ $id }}" @selected(old('status_id', $task->status_id ?? null) == $id)>{{ $name }}</option>
                             @endforeach
                         </select>
                     </div>

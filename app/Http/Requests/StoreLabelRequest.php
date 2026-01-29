@@ -40,7 +40,6 @@ class StoreLabelRequest extends FormRequest
             'name.required' => __('controllers.required_error'),
             'name.unique' => __('controllers.unique_error_label'),
             'name.max' => __('controllers.max_error'),
-            'description.max' => __('controllers.max_error'),
         ];
     }
 }

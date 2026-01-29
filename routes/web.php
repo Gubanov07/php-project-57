@@ -21,9 +21,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resources([
-    '/task_statuses' => TaskStatusController::class,
-    '/tasks' => TaskController::class,
-    '/labels' => LabelController::class,
+    'task_statuses' => TaskStatusController::class,
+    'tasks' => TaskController::class,
+    'labels' => LabelController::class,
 ]);
 
 require __DIR__ . '/auth.php';
