@@ -36,8 +36,8 @@ class TaskStatusController extends Controller
 
         $taskStatus->fill($validated);
         $taskStatus->save();
-        return redirect()->route('task_statuses.index')
-            ->with('success', __('flashes.statuses.store.success'));
+        flash(__('controllers.task_statuses_create'))->success();
+        return redirect()->route('task_statuses.index');
     }
 
     public function show(TaskStatus $taskStatus)
