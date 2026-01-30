@@ -30,7 +30,7 @@ class TaskStatusSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'name' => '	завершена',
+                'name' => 'завершена',
                 'created_at' => Carbon::now(),
             ],
         ]);
