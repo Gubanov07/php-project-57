@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,7 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             User::create([
                 'name' => 'User ' . $i,
                 'email' => 'user' . $i . '@example.com',
