@@ -20,14 +20,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         for ($i = 1; $i <= 7; $i++) {
-            User::firstOrCreate(
-            ['email' => 'user' . $i . '@example.com'],
-            [
+            User::create(
+                ['email' => 'user' . $i . '@example.com'],
+                [
                 'name' => 'User ' . $i,
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'),
                 'remember_token' => Str::random(10),
-            ]);
+                ]
+            );
         }
 
         $this->call([
