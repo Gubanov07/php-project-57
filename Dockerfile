@@ -18,6 +18,4 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm ci --no-audit --no-fund
 RUN npm run build
 
-RUN > database/database.sqlite
-
 CMD ["bash", "-c", "php artisan migrate  --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
