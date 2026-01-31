@@ -17,6 +17,7 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
+        $filter = $request->input('filter', []);
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
                 AllowedFilter::exact('status_id'),
@@ -32,7 +33,7 @@ class TaskController extends Controller
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
 
-        return view('tasks.index', compact('tasks', 'statuses', 'users', 'labels'));
+        return view('tasks.index', compact('tasks', 'statuses', 'users', 'labels', 'filter'));
     }
 
     public function create()

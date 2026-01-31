@@ -1,10 +1,5 @@
-@php
-    use App\Helpers\TaskStatusHelper;
-    use App\Helpers\UserHelper;
-@endphp
 @extends('layouts.app')
 @section('content')
-
     <div class="grid col-span-full">
         <h1 class="max-w-2xl mb-4 text-4xl leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">{{ __('layout.task_header') }}</h1>
         <div class="w-full flex items-center">

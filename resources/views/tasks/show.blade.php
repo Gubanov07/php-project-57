@@ -1,7 +1,3 @@
-@php
-    use App\Helpers\TaskStatusHelper;
-    use App\Helpers\UserHelper;
-@endphp
 @extends('layouts.app')
 @section('content')
 <div class="grid col-span-full">
