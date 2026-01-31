@@ -6,7 +6,6 @@ use App\Http\Requests\StoreLabelRequest;
 use App\Http\Requests\UpdateLabelRequest;
 use App\Models\Label;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class LabelController extends Controller
 {

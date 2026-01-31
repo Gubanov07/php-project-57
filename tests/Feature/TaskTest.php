@@ -130,7 +130,7 @@ class TaskTest extends TestCase
         $user2 = User::factory()->create();
         $responseUser2 = $this->actingAs($user2)
             ->delete(route('tasks.destroy', $createdTask));
-        $responseUser2->assertRedirect(route('tasks.index'));
+        $responseUser2->assertStatus(403);
         $this->assertDatabaseHas('tasks', ['id' => $createdTask->id]);
     }
 
