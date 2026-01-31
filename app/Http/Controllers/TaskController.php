@@ -9,7 +9,7 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -98,13 +98,17 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        if (Auth::id() === $task->created_by_id) {
-            $task->labels()->detach();
-            $task->delete();
-            flash(__('controllers.tasks_destroy'))->success();
-        } else {
+        try {
+            $this->authorize('delete', $task);
+        } catch (AuthorizationException) {
             flash(__('controllers.tasks_destroy_failed'))->error();
+            return redirect()->route('tasks.index');
         }
+
+        $task->labels()->detach();
+        $task->delete();
+        flash(__('controllers.tasks_destroy'))->success();
+
         return redirect()->route('tasks.index');
     }
 }
