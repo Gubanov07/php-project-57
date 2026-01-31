@@ -22,7 +22,7 @@ class Task extends Model
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(TaskStatus::class, 'status_id');
+        return $this->belongsTo(TaskStatus::class);
     }
 
     public function creator(): BelongsTo
@@ -37,7 +37,7 @@ class Task extends Model
 
     public function labels(): BelongsToMany
     {
-        return $this->belongsToMany(Label::class, 'label_task')
+        return $this->belongsToMany(Label::class)
                     ->withTimestamps();
     }
 }

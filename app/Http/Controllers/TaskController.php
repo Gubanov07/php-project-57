@@ -8,7 +8,6 @@ use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -16,8 +15,6 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
-    use AuthorizesRequests;
-
     public function index(Request $request)
     {
         $tasks = QueryBuilder::for(Task::class)
@@ -50,9 +47,7 @@ class TaskController extends Controller
 
     public function store(StoreTaskRequest $request)
     {
-        if (Auth::guest()) {
-            return redirect()->route('tasks.index');
-        }
+        $this->authorize('create', Task::class);
 
         $validated = $request->validated();
         $validated['created_by_id'] = auth()->id();
@@ -75,7 +70,7 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $this->authorize('create', Task::class);
+        $this->authorize('create', $task);
         $statuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
         $labels = Label::pluck('name', 'id');
@@ -85,9 +80,7 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        if (Auth::guest()) {
-            return redirect()->route('tasks.index');
-        }
+        $this->authorize('update', $task);
 
         $validated = $request->validated();
         $task->update([

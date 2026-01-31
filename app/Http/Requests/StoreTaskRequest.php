@@ -25,10 +25,10 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:tasks,name|max:255',
-            'status_id' => 'required',
+            'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'required',
-            'description' => 'max:255',
-            'labels' => '',
+            'description' => 'nullable|string',
+            'labels' => 'nullable|array',
         ];
     }
     /**

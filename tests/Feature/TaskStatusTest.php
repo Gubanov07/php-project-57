@@ -43,8 +43,7 @@ class TaskStatusTest extends TestCase
     public function testNotCreateStoreTaskStatusWithoutAuthorized(): void
     {
         $response = $this->post(route('task_statuses.store', $this->data));
-
-        $response->assertRedirect(route('task_statuses.index'));
+        $response->assertStatus(403);
 
         $this->assertDatabaseMissing('task_statuses', $this->data);
     }
@@ -70,8 +69,7 @@ class TaskStatusTest extends TestCase
     public function testNotUpdateTaskStatusWithoutAuthorized(): void
     {
         $response = $this->put(route('task_statuses.update', $this->taskStatus), $this->data);
-
-        $response->assertRedirect(route('task_statuses.index'));
+        $response->assertStatus(403);
 
         $this->assertDatabaseMissing('task_statuses', $this->data);
     }

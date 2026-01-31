@@ -23,7 +23,7 @@ class UpdateTaskRequest extends FormRequest
             'name' => 'required|max:255',
             'status_id' => 'required',
             'assigned_to_id' => 'required',
-            'description' => 'max:255',
+            'description' => 'nullable|string',
             'labels' => 'array|nullable',
         ];
     }

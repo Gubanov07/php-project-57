@@ -55,7 +55,7 @@ class TaskTest extends TestCase
         ]);
 
         $response = $this->post(route('tasks.store'), $data);
-        $response->assertRedirect(route('tasks.index'));
+        $response->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', $data);
     }
@@ -70,6 +70,9 @@ class TaskTest extends TestCase
 
     public function testUpdateTask(): void
     {
+        $this->task = Task::factory()->create([
+            'created_by_id' => $this->user->id,
+        ]);
         $data = Task::factory()->make()->only([
             'name',
             'description',
@@ -78,7 +81,6 @@ class TaskTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)
             ->put(route('tasks.update', $this->task), $data);
-
         $response->assertRedirect(route('tasks.index'));
         $this->assertDatabaseHas('tasks', $data);
     }
@@ -93,7 +95,7 @@ class TaskTest extends TestCase
         ]);
 
         $response = $this->put(route('tasks.update', $this->task), $data);
-        $response->assertRedirect(route('tasks.index'));
+        $response->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', $data);
     }

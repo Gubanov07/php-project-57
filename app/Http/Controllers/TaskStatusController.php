@@ -5,14 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskStatusRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Models\TaskStatus;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class TaskStatusController extends Controller
 {
-    use AuthorizesRequests;
-
     public function index()
     {
         $taskStatuses = TaskStatus::paginate(10);
@@ -27,9 +24,7 @@ class TaskStatusController extends Controller
 
     public function store(StoreTaskStatusRequest $request)
     {
-        if (Auth::guest()) {
-            return redirect()->route('task_statuses.index');
-        }
+        $this->authorize('create', TaskStatus::class);
 
         $validated = $request->validated();
         $taskStatus = new TaskStatus();
@@ -52,9 +47,7 @@ class TaskStatusController extends Controller
 
     public function update(UpdateTaskStatusRequest $request, TaskStatus $taskStatus)
     {
-        if (Auth::guest()) {
-            return redirect()->route('task_statuses.index');
-        }
+        $this->authorize('update', $taskStatus);
 
         $validated = $request->validated();
 
